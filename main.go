@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"os"
+	"sort"
 )
 
 const RssFile = "rss.xml"
@@ -28,6 +29,31 @@ type Item struct {
 	Link    string `xml:"link"`
 	PubDate string `xml:"pubDate"`
 	Desc    string `xml:"description"`
+}
+
+func writeRssFile(rss Rss) {
+	data, marshalErr := xml.MarshalIndent(rss, "", "  ")
+
+	if marshalErr != nil {
+		fmt.Println("failed to marshal XML")
+		os.Exit(0)
+	}
+
+	os.WriteFile(RssFile, data, 0644)
+}
+
+func loadRss() Rss {
+	data, readErr := os.ReadFile(RssFile)
+
+	if readErr != nil {
+		fmt.Println("Failed to open RSS file. Make sure to run 'rss new' to generate a file.")
+		os.Exit(0)
+	}
+
+	var rss Rss
+	xml.Unmarshal(data, &rss)
+
+	return rss
 }
 
 func createRssFile() {
@@ -58,27 +84,8 @@ func createRssFile() {
 	writeRssFile(rss)
 }
 
-func writeRssFile(rss Rss) {
-	data, marshalErr := xml.MarshalIndent(rss, "", "  ")
-
-	if marshalErr != nil {
-		fmt.Println("failed to marshal XML")
-		os.Exit(0)
-	}
-
-	os.WriteFile(RssFile, data, 0644)
-}
-
 func addItem() {
-	data, readErr := os.ReadFile(RssFile)
-
-	if readErr != nil {
-		fmt.Println("Failed to open RSS file. Make sure to run 'rss new' to generate a file.")
-		os.Exit(0)
-	}
-
-	var rss Rss
-	xml.Unmarshal(data, &rss)
+	rss := loadRss()
 
 	in := bufio.NewReader(os.Stdin)
 
@@ -106,6 +113,27 @@ func addItem() {
 
 	rss.Chan.Items = append(rss.Chan.Items, newItem)
 
+	// sort items by date in descending order
+	sort.Slice(rss.Chan.Items, func(i, j int) bool {
+		return rss.Chan.Items[i].PubDate > rss.Chan.Items[j].PubDate
+	})
+
+	writeRssFile(rss)
+}
+
+func removeItem() {
+	rss := loadRss()
+
+	for i := range rss.Chan.Items {
+		fmt.Printf("%2d: %s\n", i, rss.Chan.Items[i].Title)
+	}
+
+	var indxToRemove int
+	fmt.Print("Item to remove: ")
+	fmt.Scanln(&indxToRemove)
+
+	rss.Chan.Items = append(rss.Chan.Items[:indxToRemove], rss.Chan.Items[indxToRemove+1:]...)
+
 	writeRssFile(rss)
 }
 
@@ -120,8 +148,10 @@ func main() {
 	switch args[1] {
 	case "new":
 		createRssFile()
-	case "additem":
+	case "add":
 		addItem()
+	case "remove":
+		removeItem()
 	default:
 		// TODO: make this print help
 		fmt.Printf("argument %s not recognized", args[1])

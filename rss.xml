@@ -4,16 +4,16 @@
     <link>my link</link>
     <description>this is a desc</description>
     <item>
+      <title>item 3</title>
+      <link>http://aaa.aaa.aaa</link>
+      <pubDate>2022-05-05</pubDate>
+      <description>item 3 description</description>
+    </item>
+    <item>
       <title>item 1</title>
       <link>http://asdf.asdf.asdf</link>
       <pubDate>2022-01-01</pubDate>
       <description>item 1 description</description>
-    </item>
-    <item>
-      <title>item 2</title>
-      <link>http://zxvc.zxvc.zxcv</link>
-      <pubDate>2022-01-02</pubDate>
-      <description>item 2 description</description>
     </item>
   </channel>
 </rss>
