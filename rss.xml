@@ -1,19 +1,14 @@
-<rss xmlns:atom="" version="2.0">
+<rss version="2.0">
   <channel>
-    <title>My title</title>
-    <link>my link</link>
-    <description>this is a desc</description>
+    <title>asdf</title>
+    <link>asdf</link>
+    <description>qwerwqerqwerw</description>
     <item>
-      <title>item 3</title>
-      <link>http://aaa.aaa.aaa</link>
-      <pubDate>2022-05-05</pubDate>
-      <description>item 3 description</description>
-    </item>
-    <item>
-      <title>item 1</title>
-      <link>http://asdf.asdf.asdf</link>
-      <pubDate>2022-01-01</pubDate>
-      <description>item 1 description</description>
+      <title>asdf</title>
+      <link>asdf</link>
+      <pubDate>asdf</pubDate>
+      <description>asdf</description>
+      <guid>asdf</guid>
     </item>
   </channel>
 </rss>

@@ -12,7 +12,6 @@ const RssFile = "rss.xml"
 
 type Rss struct {
 	XMLName xml.Name `xml:"rss"`
-	Atom    string   `xml:"xmlns:atom,attr"`
 	Version string   `xml:"version,attr"`
 	Chan    Channel  `xml:"channel"`
 }
@@ -29,6 +28,7 @@ type Item struct {
 	Link    string `xml:"link"`
 	PubDate string `xml:"pubDate"`
 	Desc    string `xml:"description"`
+	Guid    string `xml:"guid"`
 }
 
 func writeRssFile(rss Rss) {
@@ -71,7 +71,6 @@ func createRssFile() {
 	channelDesc = channelDesc[:len(channelDesc)-1]
 
 	rss := Rss{
-		Atom:    "http://www.w3.org/2005/Atom",
 		Version: "2.0",
 		Chan: Channel{
 			Title: channelTitle,
@@ -109,6 +108,7 @@ func addItem() {
 		Link:    itemLink,
 		PubDate: itemPubDate,
 		Desc:    itemDesc,
+		Guid:    itemLink,
 	}
 
 	rss.Chan.Items = append(rss.Chan.Items, newItem)
