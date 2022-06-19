@@ -137,6 +137,14 @@ func removeItem() {
 	writeRssFile(rss)
 }
 
+func displayHelp() {
+	fmt.Printf("%6s: Creates a new rss.xml file. You will be prompted for the information needed.\n", "new")
+	fmt.Printf("%6s: Adds and item to the rss file. You will be prompted for information. "+
+		"The new items gets inserted in order by date with newest items first.\n", "add")
+	fmt.Printf("%6s: Displays all items in the file. You can enter the number of the item to remove.\n", "remove")
+	fmt.Printf("%6s: Displays information about available commands.\n", "help")
+}
+
 func main() {
 	args := os.Args
 
@@ -152,8 +160,10 @@ func main() {
 		addItem()
 	case "remove":
 		removeItem()
+	case "help":
+		displayHelp()
 	default:
-		// TODO: make this print help
-		fmt.Printf("argument %s not recognized", args[1])
+		fmt.Printf("argument %s not recognized\n\n", args[1])
+		displayHelp()
 	}
 }
